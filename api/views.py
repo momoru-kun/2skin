@@ -97,7 +97,6 @@ class AddToCart(APIView):
             cart.cartposition_set.add(cart_position)
         
         cart.save()
-        print(cart.cartposition_set.all())
 
         return Response({'status': 'ok'})
 
@@ -110,8 +109,6 @@ class SetPositionAmount(APIView):
         _id = request.session.get('id')
         position_id = request.data.get('position_id')
         amount = request.data.get('amount')
-        print(position_id, amount)
-        print(112)
 
         if position_id is None or amount is None:
             return Response(
@@ -125,7 +122,6 @@ class SetPositionAmount(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        print("125")
         cart = Cart.objects.get(id=_id)
         cartposition = cart.cartposition_set.get(position_id=position_id)
         cartposition.amount = amount
@@ -169,8 +165,6 @@ class ValidatePromo(APIView):
             return Response({'promo is required'}, status=status.HTTP_400_BAD_REQUEST)
 
         promo_data = None
-        print(promo)
-        print(Promocode.objects.all())
         try:
             promo_data = Promocode.objects.get(code=promo)
         except:
